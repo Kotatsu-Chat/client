@@ -80,7 +80,7 @@ function login() {
             break;
           case 200:
             token = JSON.parse(response.response).access_token
-            loadLatestMessages()
+            loadChannel()
             break;
           default:
             log(`Unknown login error. (1${response.status})`)
@@ -90,9 +90,8 @@ function login() {
   )
 }
 
-function loadLatestMessages() {  
+function loadChannel() {  
   var parameters = {count: 50, type: -1}
-  var messages = []
   api.request(url, "POST", `/api/channel/${channel}/getmessages/9223372036854775807`, parameters, null, null, token).then((loadid) =>
     api.receive(loadid, (response) => {
       if (response.error) {
@@ -107,6 +106,9 @@ function loadLatestMessages() {
             break;
           case 401:
             log(`Authentication failed. (2401)`)
+            break;
+          case 204:
+            log(`(This channel is empty.)`)
             break;
           case 200:
             JSON.parse(response.response).forEach((element) => {
@@ -124,13 +126,12 @@ function loadLatestMessages() {
 
 function listen(channel) {
   var listener = new WebSocket(`wss://`+url+`/api/channel/${channel}/listen`)
-  listener.onmessage = (event) => {
+  listener.addEventListener('message', (event) => {
     displayMessage(JSON.parse(event.data));
-  };
+  });
 }
 
-function sendMessage(message) {  
-  var channel = 1
+function sendMessage(message) {
   api.request(url, "POST", `/api/channel/${channel}/sendmessage`, {}, {message:message}, 'json', token).then((loadid) =>
     api.receive(loadid, (response) => {
       if (response.error) {
@@ -159,10 +160,16 @@ function sendMessage(message) {
   )
 }
 
+function changeChannel(to) {
+  channel = to
+  document.getElementById("channeltitle").innerText = `Channel ${to}`
+  loadChannel()
+}
+
 var username = ''
 var password = ''
 var token = null
 
-var channel = 1
+var channel = 4
 
 chatbox.addEventListener("keydown", send);
