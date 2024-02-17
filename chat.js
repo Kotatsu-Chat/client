@@ -11,16 +11,35 @@ function clear() {
   chatlog.textContent = '';
 }
 
+function formatTimestamp(snowflake) {
+  console.log(snowflake)
+  var timestamp = snowflake / 2**22 + 1704067200000
+  var t = new Date(snowflake / 2**22 + 1704067200000); //get actual time from snowflake
+  
+  var time = `${t.getHours()}:${t.getMinutes().toString().padStart(2,'0')}`
+  var date = Date.now()-timestamp < 86400000 ? '' : `on ${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}`
+  return time + date
+}
+
 function log(text) {
   var log = document.createElement("div")
   log.classList.add("message")
   log.innerHTML = text
   chatlog.insertBefore(log, chatlog.firstChild)
+  return log
+}
+
+function formatMessage(message) {
+  return escapeHtml(message) //will be used for formatting later
 }
 
 function displayMessage(message) {
   console.log(message)
-  log(`<b>${escapeHtml(message.user.username)}</b>: ${escapeHtml(message.message.message)}`);
+  var display = log(`<b>${escapeHtml(message.user.username)}: </b>${formatMessage(message.message.message)}`);
+  var timestamp = document.createElement("small")
+  timestamp.classList.add("timestamp")
+  timestamp.innerHTML = formatTimestamp(message.message.snowflake)
+  display.appendChild(timestamp)
 }
 
 
@@ -78,7 +97,8 @@ function login() {
             break;
           case 401:
             clear()
-            log(`Authentication failed. Enter new username. (1401)`);
+            log(`Authentication failed. (1401)`);
+            log(`Enter new username.`);
             loginStage = 0
             break;
           case 200:

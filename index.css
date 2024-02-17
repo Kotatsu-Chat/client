@@ -45,11 +45,6 @@ body {
 #logbox::-webkit-scrollbar-thumb {
     background-color: #605040;
 }
-.message {
-    width: calc(100% - 40px);
-    border-top: 1px solid #ffffff20;
-    margin: 5px 20px;
-}
 #chatbox {
     background-color: #605040;
     color: #ffffff;
@@ -58,4 +53,16 @@ body {
 }
 ::placeholder {
     color: #aaaaaa;
+}
+
+.message {
+    display: flex;
+    width: calc(100% - 40px);
+    border-top: 1px solid #ffffff20;
+    margin: 5px 20px;
+    white-space: pre-wrap;
+}
+.timestamp {
+    margin-left: auto;
+    color: darkgrey;
 }
