@@ -30,6 +30,9 @@ var options = null
 var url = null
 fetch('./config.json').then((response) => response.json()).then((json) => setup(json))
 var loginStage = 0 //0 = username, 1 = password, 2 = done
+var username = ''
+var password = ''
+var token = null
 
 function setup(json) { //initializes everything
   options = json
@@ -80,7 +83,7 @@ function login() {
             break;
           case 200:
             token = JSON.parse(response.response).access_token
-            loadChannel()
+            joinChannel(4)
             break;
           default:
             log(`Unknown login error. (1${response.status})`)
@@ -88,6 +91,14 @@ function login() {
       }
     })
   )
+}
+
+var channel = 4
+
+function joinChannel(target = null) {
+  if (target) {channel = target};
+  document.getElementById("channeltitle").innerText = `Channel ${channel}`;
+  loadChannel();
 }
 
 function loadChannel() {  
@@ -111,6 +122,7 @@ function loadChannel() {
             log(`(This channel is empty.)`)
             break;
           case 200:
+            clear()
             JSON.parse(response.response).forEach((element) => {
               displayMessage(element);
             });
@@ -159,17 +171,5 @@ function sendMessage(message) {
     })
   )
 }
-
-function changeChannel(to) {
-  channel = to
-  document.getElementById("channeltitle").innerText = `Channel ${to}`
-  loadChannel()
-}
-
-var username = ''
-var password = ''
-var token = null
-
-var channel = 4
 
 chatbox.addEventListener("keydown", send);

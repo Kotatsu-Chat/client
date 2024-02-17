@@ -13,16 +13,19 @@ body {
     margin-top: 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
+#channeltitle {
+    margin: 0 auto;
+    font-weight: bold;
+}
 #chatlog {
     display: flex;
     flex-flow: column-reverse;
-    border: 1px solid grey;
     background-color: #504030;
     flex: 1 1 auto;
 }
 #logbox {
     display: flex;
-    flex-flow: column-reverse;
+    flex-flow: column;
     height: 100%;
     max-height: 100%;
     overflow-y: auto;
