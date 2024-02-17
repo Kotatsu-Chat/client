@@ -20,15 +20,6 @@ const createWindow = () => {
   })
 }
 
-const template = [
-  {
-    label: 'No menu for you'
-  }
-]
-
-
-const menu = Menu.buildFromTemplate(template)
-//Menu.setApplicationMenu(menu)
 //Menu.setApplicationMenu(null)
 
 app.whenReady().then(() => {
@@ -36,6 +27,6 @@ app.whenReady().then(() => {
 })
 
 
-for (const dependency of ['chrome', 'node', 'electron']) {
-  console.log(`${dependency} ver ${process.versions[dependency]}`)
-}
+//for (const dependency of ['chrome', 'node', 'electron']) {
+//  console.log(`${dependency} ver ${process.versions[dependency]}`)
+//}

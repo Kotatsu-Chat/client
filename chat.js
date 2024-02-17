@@ -67,15 +67,15 @@ function login() {
       } else {
         switch (response.status) {
           case 500:
-            log(`Server unavailable.`)
+            log(`Server unavailable. (1500)`)
             break;
           case 422:
             clear()
-            log(`Invalid login.`);
+            log(`Invalid login. (1422)`);
             break;
           case 401:
             clear()
-            log(`Authentication failed. Enter new username.`);
+            log(`Authentication failed. Enter new username. (1401)`);
             loginStage = 0
             break;
           case 200:
@@ -83,7 +83,7 @@ function login() {
             loadLatestMessages()
             break;
           default:
-            log(`Unknown login error. (${response.status})`)
+            log(`Unknown login error. (1${response.status})`)
         }
       }
     })
@@ -100,13 +100,13 @@ function loadLatestMessages() {
       } else {
         switch (response.status) {
           case 500:
-            log(`Server unavailable.`)
+            log(`Server unavailable. (2500)`)
             break;
           case 422:
-            log(`Invalid state.`);
+            log(`Invalid state. (2422)`);
             break;
           case 401:
-            log(`Authentication failed.`)
+            log(`Authentication failed. (2401)`)
             break;
           case 200:
             JSON.parse(response.response).forEach((element) => {
@@ -115,7 +115,7 @@ function loadLatestMessages() {
             listen(channel)
             break;
           default:
-            log(`Unknown loading error. (${response.status})`)
+            log(`Unknown loading error. (2${response.status})`)
         }
       }
     })
@@ -138,21 +138,21 @@ function sendMessage(message) {
       } else {
         switch (response.status) {
           case 500:
-            log(`Server unavailable.`)
+            log(`Server unavailable. (3500)`)
             break;
           case 422:
-            log(`Invalid state.`);
+            log(`Invalid state. (3422)`);
             break;  
           case 401:
-            log(`Authentication failed.`)
+            log(`Authentication failed. (3401)`)
             break;
           case 400:
-            log(`Message too long.`)
+            log(`Message too long. (3400)`)
             break;
           case 201:
             break;
           default:
-            log(`Unknown message error. (${response.status})`)
+            log(`Unknown message error. (3${response.status})`)
         }
       }
     })
