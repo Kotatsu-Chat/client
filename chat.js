@@ -12,7 +12,6 @@ function clear() {
 }
 
 function formatTimestamp(snowflake) {
-  console.log(snowflake)
   var timestamp = snowflake / 2**22 + 1704067200000
   var t = new Date(snowflake / 2**22 + 1704067200000); //get actual time from snowflake
   
@@ -34,7 +33,6 @@ function formatMessage(message) {
 }
 
 function displayMessage(message) {
-  console.log(message)
   var display = log(`<b>${escapeHtml(message.user.username)}: </b>${formatMessage(message.message.message)}`);
   var timestamp = document.createElement("small")
   timestamp.classList.add("timestamp")
@@ -143,7 +141,11 @@ function loadChannel() {
             break;
           case 200:
             clear()
-            JSON.parse(response.response).forEach((element) => {
+            var messages = JSON.parse(response.response)
+            messages.sort((a,b) => {
+              return a.message.snowflake - b.message.snowflake
+            });
+            messages.forEach((element) => {
               displayMessage(element);
             });
             listen(channel)
