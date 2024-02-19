@@ -11,13 +11,23 @@ function clear() {
   chatlog.textContent = '';
 }
 
+const months = ['Jan','Feb','Mar','Apr','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
 function formatTimestamp(snowflake) {
   var timestamp = snowflake / 2**22 + 1704067200000
   var t = new Date(snowflake / 2**22 + 1704067200000); //get actual time from snowflake
   
   var time = `${t.getHours()}:${t.getMinutes().toString().padStart(2,'0')}`
-  var date = Date.now()-timestamp < 86400000 ? '' : `on ${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}`
-  return time + date
+  if (Date.now() - timestamp < 86400000) {
+    var date = ``
+  } else if (Date.now() - timestamp < (2*86400000)) {
+    var date = `Yesterday at `
+  } else if (Date.now().year() == t.year()) {
+    var date = `${months[t.getMonth]} ${t.getDate}`
+  } else {
+    var date = `${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()} `
+  }
+  return date + time
 }
 
 function log(text) {
@@ -57,6 +67,14 @@ function setup(json) { //initializes everything
   log("Enter username.")
 }
 
+function keydown(event) {
+  if (event.key.length == 1 && document.activeElement.nodeName == "BODY") {
+    chatbox.focus()
+  }
+}
+
+document.addEventListener("keydown", keydown);
+
 function send(event) {
   if (event.key == "Enter" && chatbox.value) {
     var value = chatbox.value
@@ -78,6 +96,8 @@ function send(event) {
     }
   }
 }
+
+chatbox.addEventListener("keydown", send);
 
 function login() {
   api.request(url, "POST", "/api/token", {}, {username:username, password:password}, 'query').then((logid) =>
@@ -113,10 +133,19 @@ function login() {
 
 var channel = 4
 
+var arrowleft = document.getElementById('arrow-left')
+var arrowright = document.getElementById('arrow-right')
+
+arrowleft.addEventListener("click", (_event) => {joinChannel(channel-1)})
+arrowright.addEventListener("click", (_event) => {joinChannel(channel+1)})
+
 function joinChannel(target = null) {
   if (target) {channel = target};
-  document.getElementById("channeltitle").innerText = `Channel ${channel}`;
   loadChannel();
+  document.getElementById("channeltitle").innerText = `Channel ${channel}`;
+  for (let i of document.getElementsByClassName("arrow")) {
+    i.style.display = 'inline'
+  }
 }
 
 function loadChannel() {  
@@ -158,8 +187,11 @@ function loadChannel() {
   )
 }
 
+var listener = null
+
 function listen(channel) {
-  var listener = new WebSocket(`wss://`+url+`/api/channel/${channel}/listen`)
+  if (listener) {listener.close(1000)}
+  listener = new WebSocket(`wss://`+url+`/api/channel/${channel}/listen`)
   listener.addEventListener('message', (event) => {
     displayMessage(JSON.parse(event.data));
   });
@@ -193,5 +225,3 @@ function sendMessage(message) {
     })
   )
 }
-
-chatbox.addEventListener("keydown", send);

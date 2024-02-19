@@ -20,13 +20,6 @@ const createWindow = () => {
   })
 }
 
-//Menu.setApplicationMenu(null)
-
 app.whenReady().then(() => {
   createWindow()
 })
-
-
-//for (const dependency of ['chrome', 'node', 'electron']) {
-//  console.log(`${dependency} ver ${process.versions[dependency]}`)
-//}

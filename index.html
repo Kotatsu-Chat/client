@@ -5,12 +5,16 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
     <link rel="stylesheet" type="text/css" href="index.css" /> 
-    <title>Rollplayer Chat</title>
+    <title>Kotatsu</title>
   </head>
   <body>
     <div id="main">
-      <h3 style="text-align: center">Rollplayer Chat <small>v0.0.1</small></h3>
-      <div id="channeltitle">Login</div>
+      <h2 style="text-align: center">Kotatsu <small>v0.0.3</small></h2>
+      <div id="topbar">
+        <div class="arrow" id="arrow-left" style="display:none;">&laquo;</div>
+        <div id="channeltitle">Login</div>
+        <div class="arrow" id="arrow-right" style="display:none;">&raquo;</div>
+      </div>
       <div id="logbox">
         <div id="chatlog"></div>
       </div>

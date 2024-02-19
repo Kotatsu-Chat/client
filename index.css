@@ -13,12 +13,28 @@ body {
     margin-top: 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
-#channeltitle {
+#topbar {
     margin: 0;
+    font-size: 18pt;
     font-weight: bold;
     background-color: #483828;
     border: 1px solid lightgrey;
     text-align: center;
+    line-height: 28px;
+    display: flex;
+    justify-content: space-between;
+}
+#channeltitle {
+    margin: auto;
+}
+.arrow {
+    width: 28px;
+    border-right: 1px solid grey;
+    border-left: 1px solid grey;
+    user-select: none;
+}
+.arrow:hover {
+    background-color: #605040;
 }
 #chatlog {
     display: flex;
